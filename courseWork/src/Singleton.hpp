@@ -1,0 +1,38 @@
+#pragma once
+
+#include "tools/listTools.hpp"
+#include "tools/treeTools.hpp"
+#include "data/Nodes.hpp"
+#include "data/DatabaseTools.hpp"
+#include "data/Sorting.hpp"
+
+class Singleton
+{
+private:
+    ListNode *list = nullptr;
+    ListNodeIndex *sortedList = nullptr;
+
+public:
+    ListNode *getList()
+    {
+        if (list == nullptr)
+            list = getListFromDataBase();
+        return list;
+    }
+    ListNodeIndex *getSortedList()
+    {
+        if (sortedList == nullptr)
+        {
+            sortedList = copyByIndex(getList());
+            mergeSort(sortedList, compareList);
+        }
+        return sortedList;
+    }
+
+    void clear()
+    {
+        clearList(list);
+        clearList(sortedList);
+    }
+
+} singleton;
